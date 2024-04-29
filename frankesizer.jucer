@@ -5,6 +5,15 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="YYdsgu" name="frankesizer">
     <GROUP id="{EC8B764A-0D5F-BCC2-BE21-07F266337C16}" name="Source">
+      <GROUP id="{018BCDAA-37DC-E10A-9E3C-10CADBBA0419}" name="Data">
+        <FILE id="OLl6QC" name="ADSRData.cpp" compile="1" resource="0" file="Source/Data/ADSRData.cpp"/>
+        <FILE id="g2UiRy" name="ADSRData.h" compile="0" resource="0" file="Source/Data/ADSRData.h"/>
+      </GROUP>
+      <GROUP id="{AB6FBCEC-1027-5EDC-9B76-4F9C6A43AD99}" name="UI">
+        <FILE id="rivwng" name="ADSRComponent.cpp" compile="1" resource="0"
+              file="Source/UI/ADSRComponent.cpp"/>
+        <FILE id="HnBtBf" name="ADSRComponent.h" compile="0" resource="0" file="Source/UI/ADSRComponent.h"/>
+      </GROUP>
       <FILE id="vCVaSg" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="mJUnpB" name="PluginProcessor.h" compile="0" resource="0"
