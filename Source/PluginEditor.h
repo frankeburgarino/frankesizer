@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "UI/ADSRComponent.h"
+#include "UI/OscComponent.h"
 
 //==============================================================================
 /**
@@ -27,11 +28,9 @@ public:
 
 private:
 
-    juce::ComboBox oscSelector;
-
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> oscSelAttachment;
-
     FrankesizerAudioProcessor& audioProcessor;
+
+    OscComponent osc;
 
     ADSRComponent adsr;
 

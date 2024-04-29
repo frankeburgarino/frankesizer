@@ -160,7 +160,10 @@ void FrankesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
             auto& sustain = *apvts.getRawParameterValue("SUSTAIN");
             auto& release = *apvts.getRawParameterValue("RELEASE");
 
+            auto& oscWaveChoice = *apvts.getRawParameterValue("OSC");
+
             voice->update(attack.load(), decay.load(), sustain.load(), release.load());
+            voice->getOscillator().setWaveType(oscWaveChoice);
 
         }
 
