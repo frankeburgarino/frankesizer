@@ -104,6 +104,14 @@ void FrankesizerAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
         }
     }
 
+    juce::dsp::ProcessSpec spec;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.sampleRate = sampleRate;
+    spec.numChannels = getTotalNumOutputChannels();
+
+    chorus.prepare(spec);
+    phaser.prepare(spec);
+
 }
 
 void FrankesizerAudioProcessor::releaseResources()
@@ -138,14 +146,14 @@ bool FrankesizerAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 }
 #endif
 
-void FrankesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void FrankesizerAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+        buffer.clear(i, 0, buffer.getNumSamples());
 
     auto numSamples = buffer.getNumSamples();
 
@@ -164,11 +172,6 @@ void FrankesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
             auto& sustain = *apvts.getRawParameterValue("SUSTAIN");
             auto& release = *apvts.getRawParameterValue("RELEASE");
 
-            auto& chorusDepth = *apvts.getRawParameterValue("CHORUS_DEPTH");
-            auto& chorusRate = *apvts.getRawParameterValue("CHORUS_RATE");
-            auto& chorusFeedback = *apvts.getRawParameterValue("CHORUS_FEEDBACK");
-            auto& chorusMix = *apvts.getRawParameterValue("CHORUS_MIX");
-
             voice->update(attack.load(), decay.load(), sustain.load(), release.load());
             voice->getOscillator().setWaveType(oscWaveChoice);
 
@@ -180,23 +183,22 @@ void FrankesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer(channel);
+    auto& chorusDepth = *apvts.getRawParameterValue("CHORUS_DEPTH");
+    auto& chorusRate = *apvts.getRawParameterValue("CHORUS_RATE");
+    auto& chorusFeedback = *apvts.getRawParameterValue("CHORUS_FEEDBACK");
+    auto& chorusMix = *apvts.getRawParameterValue("CHORUS_MIX");
 
-        /*if (!distortion.checkBypass()) {
-            distortion.processBuffer(channelData, numSamples, channel);
-        }
+    auto& phaserDepth = *apvts.getRawParameterValue("PHASER_DEPTH");
+    auto& phaserRate = *apvts.getRawParameterValue("PHASER_RATE");
+    auto& phaserFeedback = *apvts.getRawParameterValue("PHASER_FEEDBACK");
+    auto& phaserMix = *apvts.getRawParameterValue("PHASER_MIX");
 
-        if (!delay.checkBypass()) {
-            distortion.processBuffer(channelData, numSamples, channel);
-        }
+    chorus.updateChorus(chorusDepth, chorusRate, chorusFeedback, chorusMix);
+    phaser.updatePhaser(phaserDepth, phaserRate, phaserFeedback, phaserMix);
 
-        if (!reverb.checkBypass()) {
-            distortion.processBuffer(channelData, numSamples, channel);
-        }*/
-        
-    }
+    juce::dsp::AudioBlock<float> block{ buffer };
+    chorus.process(juce::dsp::ProcessContextReplacing<float>(block));
+    phaser.process(juce::dsp::ProcessContextReplacing<float>(block));
 
 }
 
@@ -217,12 +219,26 @@ void FrankesizerAudioProcessor::getStateInformation (juce::MemoryBlock& destData
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+
+    auto currentState = apvts.copyState(); // make a duplicate that won't be updated suring write to file
+
+    std::unique_ptr<juce::XmlElement> xml(currentState.createXml());
+
+    copyXmlToBinary(*xml, destData);
+
 }
 
 void FrankesizerAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+
+    std::unique_ptr<juce::XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
+
+    juce::ValueTree newTree = juce::ValueTree::fromXml(*xml);
+
+    apvts.replaceState(newTree);
+
 }
 
 //==============================================================================
@@ -253,15 +269,16 @@ juce::AudioProcessorValueTreeState::ParameterLayout FrankesizerAudioProcessor::c
     params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", juce::NormalisableRange<float> { 0.f, 3.0f, 0.1f }, 0.1f));
 
     // Chorus
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("CHORUS_DEPTH", "Chorus Depth", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("CHORUS_RATE", "Chorus Rate", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("CHORUS_FEEDBACK", "Chorus Feedback", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("CHORUS_DEPTH", "Chorus Depth", juce::NormalisableRange<float> { 0.f, 0.5f, 0.01f }, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("CHORUS_RATE", "Chorus Rate", juce::NormalisableRange<float> { 0.1f, 10.0f, 0.1f }, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("CHORUS_FEEDBACK", "Chorus Feedback", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("CHORUS_MIX", "Chorus Mix", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
 
-    // Delay
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DELAY_TIME", "Delay Time", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DELAY_FEEDBACK", "Delay Feedback", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DELAY_MIX", "Delay Mix", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
+    // Phaser
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("PHASER_DEPTH", "Phaser Depth", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("PHASER_RATE", "Phaser Rate", juce::NormalisableRange<float> { 0.1f, 10.0f, 0.1f }, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("PHASER_FEEDBACK", "Phaser Feedback", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("PHASER_MIX", "Phaser Mix", juce::NormalisableRange<float> { 0.f, 1.0f, 0.1f }, 0.1f));
 
     return { params.begin(), params.end() };
 

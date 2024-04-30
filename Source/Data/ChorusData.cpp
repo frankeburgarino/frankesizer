@@ -9,3 +9,10 @@
 */
 
 #include "ChorusData.h"
+
+void ChorusData::updateChorus(const float depth, const float rate, const float feedback, const float mix) {
+    setDepth(depth);
+    setRate(rate);
+    setFeedback(feedback);
+    setMix(mix);
+}

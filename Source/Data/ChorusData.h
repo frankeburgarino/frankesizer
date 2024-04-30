@@ -9,3 +9,16 @@
 */
 
 #pragma once
+#include <JuceHeader.h>
+
+class ChorusData : public juce::dsp::Chorus<float> {
+
+public:
+
+    void updateChorus(const float depth, const float rate, const float feedback, const float mix);
+
+private:
+
+    
+
+};

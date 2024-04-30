@@ -11,6 +11,8 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "SynthVoice.h"
+#include "Data/ChorusData.h"
+#include "Data/PhaserData.h"
 
 //==============================================================================
 /**
@@ -61,7 +63,12 @@ private:
 
     juce::Synthesiser synth;
 
+    ChorusData chorus;
+
+    PhaserData phaser;
+
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    /*void parameterChanged(const juce::String& parameterID, float newValue) override;*/
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FrankesizerAudioProcessor)

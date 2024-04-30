@@ -11,7 +11,7 @@
 
 //==============================================================================
 FrankesizerAudioProcessorEditor::FrankesizerAudioProcessorEditor (FrankesizerAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), osc(audioProcessor.apvts, "OSC"), adsr(audioProcessor.apvts), chorus(audioProcessor.apvts), delay(audioProcessor.apvts)
+    : AudioProcessorEditor (&p), audioProcessor (p), osc(audioProcessor.apvts, "OSC"), adsr(audioProcessor.apvts), chorus(audioProcessor.apvts), phaser(audioProcessor.apvts)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -20,7 +20,7 @@ FrankesizerAudioProcessorEditor::FrankesizerAudioProcessorEditor (FrankesizerAud
     addAndMakeVisible(adsr);
     addAndMakeVisible(osc);
     addAndMakeVisible(chorus);
-    addAndMakeVisible(delay);
+    addAndMakeVisible(phaser);
 
 }
 
@@ -55,6 +55,6 @@ void FrankesizerAudioProcessorEditor::resized()
     osc.setBounds(10, getHeight() - 70, 100, 30);
     adsr.setBounds(100, getHeight() - 110, 400, 100);
     chorus.setBounds(10, getHeight() - 350, 230, 230);
-    delay.setBounds(260, getHeight() - 350, 230, 230);
+    phaser.setBounds(260, getHeight() - 350, 230, 230);
 
 }

@@ -13,7 +13,7 @@
 #include "UI/ADSRComponent.h"
 #include "UI/OscComponent.h"
 #include "UI/ChorusComponent.h"
-#include "UI/DelayComponent.h"
+#include "UI/PhaserComponent.h"
 
 //==============================================================================
 /**
@@ -38,7 +38,7 @@ private:
 
     ChorusComponent chorus;
 
-    DelayComponent delay;
+    PhaserComponent phaser;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FrankesizerAudioProcessorEditor)
 

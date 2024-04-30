@@ -9,3 +9,16 @@
 */
 
 #pragma once
+#include <JuceHeader.h>
+
+class PhaserData : public juce::dsp::Phaser<float> {
+
+public:
+
+    void updatePhaser(const float depth, const float rate, const float feedback, const float mix);
+
+private:
+
+
+
+};
