@@ -12,6 +12,8 @@
         <FILE id="F5ty3y" name="ChorusData.h" compile="0" resource="0" file="Source/Data/ChorusData.h"/>
         <FILE id="sQA0af" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
         <FILE id="KmjSJ4" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
+        <FILE id="DcjRsK" name="PhaserData.cpp" compile="1" resource="0" file="Source/Data/PhaserData.cpp"/>
+        <FILE id="JhsEDC" name="PhaserData.h" compile="0" resource="0" file="Source/Data/PhaserData.h"/>
       </GROUP>
       <GROUP id="{AB6FBCEC-1027-5EDC-9B76-4F9C6A43AD99}" name="UI">
         <FILE id="rivwng" name="ADSRComponent.cpp" compile="1" resource="0"
@@ -24,6 +26,10 @@
         <FILE id="YiKbcj" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="uZR8c9" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
+        <FILE id="Jecqd5" name="PhaserComponent.cpp" compile="1" resource="0"
+              file="Source/UI/PhaserComponent.cpp"/>
+        <FILE id="pRtau8" name="PhaserComponent.h" compile="0" resource="0"
+              file="Source/UI/PhaserComponent.h"/>
       </GROUP>
       <FILE id="vCVaSg" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
