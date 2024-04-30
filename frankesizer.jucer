@@ -8,6 +8,10 @@
       <GROUP id="{018BCDAA-37DC-E10A-9E3C-10CADBBA0419}" name="Data">
         <FILE id="OLl6QC" name="ADSRData.cpp" compile="1" resource="0" file="Source/Data/ADSRData.cpp"/>
         <FILE id="g2UiRy" name="ADSRData.h" compile="0" resource="0" file="Source/Data/ADSRData.h"/>
+        <FILE id="hlkkF9" name="ChorusData.cpp" compile="1" resource="0" file="Source/Data/ChorusData.cpp"/>
+        <FILE id="F5ty3y" name="ChorusData.h" compile="0" resource="0" file="Source/Data/ChorusData.h"/>
+        <FILE id="lppx1w" name="DelayData.cpp" compile="1" resource="0" file="Source/Data/DelayData.cpp"/>
+        <FILE id="NvTuBx" name="DelayData.h" compile="0" resource="0" file="Source/Data/DelayData.h"/>
         <FILE id="sQA0af" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
         <FILE id="KmjSJ4" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
       </GROUP>
@@ -15,6 +19,14 @@
         <FILE id="rivwng" name="ADSRComponent.cpp" compile="1" resource="0"
               file="Source/UI/ADSRComponent.cpp"/>
         <FILE id="HnBtBf" name="ADSRComponent.h" compile="0" resource="0" file="Source/UI/ADSRComponent.h"/>
+        <FILE id="Ze6kI6" name="ChorusComponent.cpp" compile="1" resource="0"
+              file="Source/UI/ChorusComponent.cpp"/>
+        <FILE id="roLrTh" name="ChorusComponent.h" compile="0" resource="0"
+              file="Source/UI/ChorusComponent.h"/>
+        <FILE id="SKmNbQ" name="DelayComponent.cpp" compile="1" resource="0"
+              file="Source/UI/DelayComponent.cpp"/>
+        <FILE id="i2yJ8v" name="DelayComponent.h" compile="0" resource="0"
+              file="Source/UI/DelayComponent.h"/>
         <FILE id="YiKbcj" name="OscComponent.cpp" compile="1" resource="0"
               file="Source/UI/OscComponent.cpp"/>
         <FILE id="uZR8c9" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>

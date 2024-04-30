@@ -32,7 +32,11 @@ private:
     juce::Slider decaySlider;
     juce::Slider sustainSlider;
     juce::Slider releaseSlider;
-    juce::ComboBox oscSelector;
+
+    juce::Label attackLabel;
+    juce::Label decayLabel;
+    juce::Label sustainLabel;
+    juce::Label releaseLabel;
 
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 

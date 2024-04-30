@@ -12,6 +12,8 @@
 #include "PluginProcessor.h"
 #include "UI/ADSRComponent.h"
 #include "UI/OscComponent.h"
+#include "UI/ChorusComponent.h"
+#include "UI/DelayComponent.h"
 
 //==============================================================================
 /**
@@ -33,6 +35,10 @@ private:
     OscComponent osc;
 
     ADSRComponent adsr;
+
+    ChorusComponent chorus;
+
+    DelayComponent delay;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FrankesizerAudioProcessorEditor)
 

@@ -17,6 +17,7 @@ OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, juce::Stri
 
     juce::StringArray choices{ "Sine", "Saw", "Square" };
     oscWaveSelector.addItemList(choices, 1);
+    oscWaveSelector.setColour(juce::ComboBox::backgroundColourId, juce::Colours::darkgrey);
     addAndMakeVisible(oscWaveSelector);
 
     oscWaveSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(apvts, waveSelectorId, oscWaveSelector);
@@ -29,10 +30,10 @@ OscComponent::~OscComponent()
 
 void OscComponent::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
+    //g.fillAll(juce::Colours::black);
 }
 
 void OscComponent::resized()
 {
-    oscWaveSelector.setBounds(0, 0, 90, 20);
+    oscWaveSelector.setBounds(10, 0, 80, 20);
 }

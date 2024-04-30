@@ -25,6 +25,21 @@ ADSRComponent::ADSRComponent(juce::AudioProcessorValueTreeState& apvts)
     setSliderParams(decaySlider);
     setSliderParams(sustainSlider);
     setSliderParams(releaseSlider);
+
+    attackLabel.setText("Attack", juce::dontSendNotification);
+    decayLabel.setText("Decay", juce::dontSendNotification);
+    sustainLabel.setText("Sustain", juce::dontSendNotification);
+    releaseLabel.setText("Release", juce::dontSendNotification);
+
+    attackLabel.setJustificationType(juce::Justification::centred);
+    decayLabel.setJustificationType(juce::Justification::centred);
+    sustainLabel.setJustificationType(juce::Justification::centred);
+    releaseLabel.setJustificationType(juce::Justification::centred);
+
+    addAndMakeVisible(attackLabel);
+    addAndMakeVisible(decayLabel);
+    addAndMakeVisible(sustainLabel);
+    addAndMakeVisible(releaseLabel);
 }
 
 ADSRComponent::~ADSRComponent()
@@ -33,23 +48,28 @@ ADSRComponent::~ADSRComponent()
 
 void ADSRComponent::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colours::black);
+    //g.fillAll(juce::Colours::black);
 }
 
 void ADSRComponent::resized()
 {
 
     const auto bounds = getLocalBounds().reduced(10);
-    const auto padding = 10;
-    const auto sliderWidth = bounds.getWidth() / 4 - padding;
-    const auto sliderHeight = bounds.getWidth() / 4 - padding;
-    const auto sliderStartX = 0;
-    const auto sliderStartY = bounds.getHeight() / 2 - (sliderHeight / 2);
+    const auto padding = 20;
+    const auto sliderWidth = 80;
+    const auto sliderHeight = 80;
+    const auto sliderStartX = 10;
+    const auto sliderStartY = 20;
 
     attackSlider.setBounds(sliderStartX, sliderStartY, sliderWidth, sliderHeight);
     decaySlider.setBounds(attackSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
     sustainSlider.setBounds(decaySlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
     releaseSlider.setBounds(sustainSlider.getRight() + padding, sliderStartY, sliderWidth, sliderHeight);
+
+    attackLabel.setBounds(sliderStartX, sliderStartY - 20, sliderWidth, 20);
+    decayLabel.setBounds(attackSlider.getRight() + padding, sliderStartY - 20, sliderWidth, 20);
+    sustainLabel.setBounds(decaySlider.getRight() + padding, sliderStartY - 20, sliderWidth, 20);
+    releaseLabel.setBounds(sustainSlider.getRight() + padding, sliderStartY - 20, sliderWidth, 20);
 
 }
 
@@ -57,6 +77,9 @@ void ADSRComponent::setSliderParams(juce::Slider& slider) {
 
     slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50, 25);
+    slider.setColour(juce::Slider::thumbColourId, juce::Colours::white);
+    slider.setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::darkgrey);
+    slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::grey);
     addAndMakeVisible(slider);
 
 }
